@@ -3,8 +3,12 @@
 function init() {
   let btn = document.getElementById("fetch-btn");
   btn.addEventListener("click", fetchDog);
+
   let btn2 = document.getElementById("meal-btn")
   btn2.addEventListener("click", fetchMeal);
+
+  let btn3 = document.getElementById("joke-btn");
+  btn3.addEventListener("click", fetchJoke);
 }
 
 function fetchDog() {
@@ -71,6 +75,34 @@ function fetchMeal() {
     .catch(mealhandleError);
 }
 
+function fetchJoke(){
+  let url = "https://official-joke-api.appspot.com/random_joke";
+  fetch(url)
+    .then(statusCheck)
+    .then(resp => resp.json())
+    .then(showJoke)
+    .catch(jokeHandleError);
+}
+
+function showJoke(data) {
+  console.log("Joke:", data);
+  let tmp = document.createElement("div");
+  tmp.textContent = data.setup;
+  document.getElementById("joke-output").appendChild(tmp);
+  setTimeout(showPunchline, 3000, data);
+}
+
+function showPunchline(data){
+let tmp2 = document.createElement("div");
+  tmp2.textContent = data.punchline;
+  document.getElementById("joke-output").appendChild(tmp2).innerHTML;
+}
+
+function jokeHandleError(err) {
+  console.error("Something went wrong:", err);
+  document.getElementById("output").textContent =
+    "Error loading joke...";
+}
 
 
 init();
